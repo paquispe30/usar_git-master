@@ -1,0 +1,84 @@
+---
+title: "Documento de ejemplo"
+author: "Yo"
+date: today 
+date-format: "DD/MM/YYYY"
+embed-resources: true
+format:
+  html:
+    lang: es
+    toc: true
+    number-sections: false
+    code-fold: true
+    
+---
+
+# Presentación
+
+Este es un documento de prueba para enseñar a usar `GitHub` y `RPubs`.
+Vamos a ponerle algunos gráficos para que quede más bonito, usando el **dataset *iris***.
+
+```{r message=FALSE, warning=FALSE}
+# Cargar librerías
+library(data.table); library(ggplot2); library(stringr); library(paletteer)
+
+# Importar y adecuar datos
+datos <- as.data.table(iris)
+datos[, Species := factor(Species, 
+                          labels = str_to_title(unique(Species)))]
+
+ancho <- format(round(mean(datos$Petal.Width), 2), decimal.mark = ",")
+```
+Iris tiene `r nrow(datos)` observaciones sobre `r dim(datos[,-"Species"])[2]` variables de `r uniqueN(datos$Species)` especies de plantas. 
+
+## Gráficos
+
+El largo promedio de los pétalos sin distinguir por especie es de `r format(round(mean(datos$Petal.Length), 2), decimal.mark = ",")` centímetros, y su ancho, de `r ancho` centímetros. Vamos a graficar la relación entre especie y tamaño del pétalo
+
+### Gráfico 1
+Largo promedio según especie
+
+```{r message=FALSE, warning=FALSE}
+# Gráfico 1
+datos[, mean(Petal.Length), 
+      Species] |> ggplot() +
+  aes(x = Species, y = V1, fill = Species) +
+  geom_col() +
+  labs(title = "Largo de pétalo según especie", y = "Longitud promedio", 
+       fill = "Especie") +
+  scale_fill_paletteer_d("lisa::AndyWarhol_2") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank())
+
+```
+
+### Gráfico 2
+Distribución del ancho según especie
+
+```{r message=FALSE, warning=FALSE}
+
+# Gráfico 2
+datos |> ggplot() +
+  aes(y = Petal.Width, fill = Species) +
+  geom_histogram() +
+  facet_wrap(~Species) +
+  labs(title = "Ancho de pétalo según especie", y = "Ancho", 
+       x = "Observaciones", fill = "Especie") +
+  scale_fill_paletteer_d("lisa::AndyWarhol_2") +
+  theme_minimal()
+
+```
+
+### Gráfico 3
+Relación entre ancho y largo de cada individuo según especie 
+```{r}
+# Gráfico 3
+datos |> ggplot() +
+  aes(x = Petal.Width, y = Petal.Length, colour = Species) +
+  geom_point() +
+  labs(title = "Relación entre ancho y largo del pétalo según especie", 
+       y = "Ancho", x = "Largo", colour = "Especie") +
+  scale_color_paletteer_d("lisa::AndyWarhol_2") +
+  theme_minimal()
+
+```
