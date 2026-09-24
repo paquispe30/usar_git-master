@@ -1,3 +1,4 @@
+#para crear un PROYECTOD ESDE 0- OTRA OPCIÓN ES EMPEZAR DESDE GITHUB
 # ==============================================================================
 # SCRIPT 2: VINCULAR UN PROYECTO NUEVO A GITHUB (UNA VEZ POR PROYECTO)
 # ==============================================================================
@@ -29,6 +30,7 @@ pacman::p_load(usethis, here, data.table, ggplot2)
 # carpeta tiene que ser la del proyecto nuevo (la que tiene el .Rproj).
 # Estas dos rutas tienen que apuntar al mismo lugar (la barra / o \ puede
 # variar, eso no importa; lo que importa es que sea la misma carpeta):
+#### NUESTRA CARPETA ES DONDE ESTA NUESTRO R PROJECT??###
 
 proj_get()
 getwd()
@@ -37,14 +39,15 @@ getwd()
 # ------------------------------------------------------------------------------
 # PASO 1: EL ESCUDO DE DATOS SENSIBLES (.gitignore)
 # ------------------------------------------------------------------------------
-# BUENA PRÁCTICA CRÍTICA EN EPIDEMIOLOGÍA:
+### YO  O QUIERO QUE MI BASE DE DATOS SUBA A GITHUB### UN ARCHIVO DE GITIGNORE IGNORA LOS ARCHIVOS CONTENIDOS ALLI 
+#BUENA PRÁCTICA CRÍTICA EN EPIDEMIOLOGÍA:
 # Manejamos datos sensibles de pacientes (DEIS). Nunca deben subir a la nube.
 # Creamos la regla de exclusión ANTES de encender Git para que las bases
 # no queden guardadas en la historia del repositorio.
 #
 # Es seguro correr esto más de una vez: usethis no duplica líneas.
 
-# file.remove(".gitignore") # Para mostrar cómo crearlo
+# file.remove(".gitignore") # Para mostrar cómo crearlo, QUE DEBE SER LO PRIMERO QUE SE DEBE CREAR
 
 use_git_ignore(c(
   ".Renviron",        # Variables de entorno/credenciales locales
@@ -72,7 +75,7 @@ use_git_ignore(c(
 # Le decimos a RStudio que esta carpeta se convierta en un repositorio Git.
 
 use_git()
-
+## COMMITEAR ES MANDAR A GIT?
 # -> LA CONSOLA VA A PREGUNTAR: "There are N uncommitted files: ..."
 #    Lean esa lista ANTES de contestar. Es la última barrera antes del commit.
 #    - Tienen que aparecer: .gitignore, el .Rproj, sus scripts.
@@ -95,10 +98,11 @@ system("git ls-files")
 # ------------------------------------------------------------------------------
 # PASO 3: CREAR EL REPOSITORIO EN GITHUB Y SUBIR EL PROYECTO
 # ------------------------------------------------------------------------------
-# Como la computadora ya conoce el Token (gracias al Script 1), esto es
+# ES UNA CARPETA, PUEDEN SER PUBLICAS O PRIVADOS. SI ES PUBLICO PUEDO ALOJAR UNA PAGINA WEB
+#Como la computadora ya conoce el Token (gracias al Script 1), esto es
 # automático.
 
-use_github(private = TRUE)
+use_github(private = FALSE)#PUBLICO
 
 # ¿Por qué private = TRUE acá y no lo dejamos en el valor por defecto?
 # use_github() crea el repositorio PÚBLICO si no le decimos lo contrario.
